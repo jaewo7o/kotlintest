@@ -173,6 +173,61 @@ fun main() {
     println(book1 === book2)
     println(book1 == book3)
     println(book1 === book3)
+
+    println("## function advance")
+    deliveryItem("짬뽕")
+    deliveryItem("책", 3)
+    deliveryItem("노트북", 30, "학교")
+    deliveryItem("선물", destination = "친구집")
+
+    sum(1, 2, 3, 5)
+
+    println("## nested & inner class")
+    Outer.Nested().introduce()
+
+    val outer = Outer()
+    val inner = outer.Inner()
+
+    inner.introduceInner()
+    inner.introduceOuter()
+
+    outer.text = "Change Outer Class"
+    inner.introduceOuter()
+}
+
+class Outer {
+    var text = "Outer Class"
+
+    class Nested {
+        fun introduce() {
+            println("Nested Class")
+        }
+    }
+
+    inner class Inner {
+        var text = "Inner Class"
+
+        fun introduceInner() {
+            println(text)
+        }
+
+        fun introduceOuter() {
+            println(this@Outer.text)
+        }
+    }
+}
+
+fun sum(vararg numbers: Int) {
+    var sum = 0
+    for (number in numbers) {
+        sum += number
+    }
+
+    println(sum)
+}
+
+fun deliveryItem(name: String, count: Int = 1, destination: String = "집") {
+    println("${name}, ${count}개를 ${destination}에 배달하였습니다.")
 }
 
 class FoodPool(
