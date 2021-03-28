@@ -107,7 +107,7 @@ fun main() {
     println("${food2.name} : ${food2.count}")
     println("총계 : ${FoodPool.total}")
 
-    println("\n## list")
+    println("\n## collection 1")
     var fruits = listOf("사과", "귤", "딸기")
     println(fruits[2])
 
@@ -193,7 +193,148 @@ fun main() {
 
     outer.text = "Change Outer Class"
     inner.introduceOuter()
+
+    println("## data class")
+    val jaewoo = PersonData(1, "정재우")
+    println(jaewoo == PersonData(1, "정재우"))
+    println(jaewoo.hashCode())
+    println(jaewoo)
+
+    println(jaewoo.copy())
+    println(jaewoo.copy(name = "정다솜"))
+
+    val family = listOf(
+        PersonData(1, "정재우"),
+        PersonData(2, "고혜진"),
+        PersonData(3, "정다솜"),
+        PersonData(4, "정한별"),
+        PersonData(5, "정진우")
+    )
+
+    for (person in family) {
+        println("1. id : ${person.id}, 이름 : ${person.name}")
+    }
+
+    for ((x1, x2) in family) {
+        println("2. id : $x1, 이름 : $x2")
+    }
+
+    println("## enum class")
+    val state = State.SLEEP
+    println(state.message)
+    println(state.isSleeping())
+
+    println("\n## collection 2")
+    val fruitSet = mutableSetOf("귤", "바나나", "키위")
+    for (item in fruitSet) {
+        println("$item")
+    }
+
+    println(fruitSet.contains("귤"))
+
+    val albumns = mutableMapOf(
+        "레드벨벳" to "음파음파", "트와이스" to "FANCY", "ITZY" to "ICY"
+    )
+
+    for (albumn in albumns) {
+        println("${albumn.key}:${albumn.value}")
+    }
+
+    albumns.put("오마이걸", "번지")
+    println(albumns)
+
+    println(albumns["오마이걸"])
+
+    println("## collection function")
+
+    val names = listOf("정재우", "고혜진", "정다솜", "정한별", "정진우")
+    names.forEach({ print(it + " ") })
+
+    println()
+    println(names.filter { it.startsWith("고") })
+    println(names.map { "이름 : $it" })
+    println(names.any { it == "정재우" })
+    println(names.all { it.startsWith("정") })
+
+    data class Idol(val name: String, val birthYear: Int)
+
+    val idols = listOf(
+        Idol("바니", 1996),
+        Idol("조이", 1996),
+        Idol("츄", 1999),
+        Idol("유나", 2003)
+    )
+
+    println(idols.associateBy { it.name })
+    println(idols.groupBy { it.birthYear })
+
+    val (over98, under98) = idols.partition { it.birthYear > 1998 }
+    println(over98)
+    println(under98)
+
+    val numbers2 = listOf(-1, 3, 2, 10, 9)
+    println(numbers2.flatMap { listOf(it * 10, it + 1) })
+    println(numbers2.getOrElse(10) { 100 })
+
+    println("## variable, constant")
+    val foodCourt = FootCourt()
+    foodCourt.searchPrice(FootCourt.FOOD_PIZZA)
+    foodCourt.searchPrice(FootCourt.FOOD_STEAK)
+    foodCourt.searchPrice(FootCourt.FOOD_PASTA)
+
+    val lateInit = LateInitSample();
+    println(lateInit.getLateInitText())
+
+    lateInit.text = "값할당"
+    println(lateInit.getLateInitText())
+    
 }
+
+class LateInitSample {
+    lateinit var text: String
+
+    fun getLateInitText(): String {
+        if (::text.isInitialized) {
+            return text
+        } else {
+            return "기본값"
+        }
+    }
+}
+
+class FootCourt {
+    fun searchPrice(name: String) {
+        val price = when (name) {
+            FOOD_PASTA -> 2000
+            FOOD_STEAK -> 13000
+            FOOD_PIZZA -> 11000
+            else -> 0
+        }
+
+        println("${name}의 가격은 ${price}입니다.")
+    }
+
+    companion object {
+        const val FOOD_PASTA = "파스트"
+        const val FOOD_STEAK = "스테이크"
+        const val FOOD_PIZZA = "피자"
+    }
+}
+
+enum class State(val message: String) {
+    SING("노래를 부릅니다."),
+    EAT("밥을 먹습니다."),
+    SLEEP("잠을 잡니다.");
+
+    fun isSleeping() = this == SLEEP
+}
+
+data
+
+class PersonData(
+    val id: Int,
+    val name: String
+)
 
 class Outer {
     var text = "Outer Class"
